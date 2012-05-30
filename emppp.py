@@ -757,12 +757,6 @@ class processMessages(Thread):
                                 threadList.send.start()
                         except:
                             print 1
-##                        try:
-##                            if not threadList.test.isAlive():
-##                                threadList.test = connectedTest()
-##                                threadList.test.start()
-##                        except:
-##                            print 2
                         try:
                             if not threadList.act.isAlive():
                                 threadList.act = ActiveTest(app.tcp)
@@ -800,24 +794,6 @@ class processMessages(Thread):
                         db = dp.getLink()
                         db.query(sql)
                         dp.pushBack(db)
-                        
-                        sql = "select pid from send_history where sqid='%d' order by pid desc"%(seq,)
-                    
-                        try:
-                            db = dp.getLink()
-                            hs = db.GetAll(sql)
-                            dp.pushBack(db)
-                            for h in hs:
-                                server_api(baseUrl="http://192.168.1.236:85/ISVService/SMSService.aspx",\
-                                       params={'type':'1','id':str(h[0]),'status':'1','time':time.strftime('%Y%m%d-%H:%M:%S')})
-                            
-
-                        except Exception,e:
-                            
-                            writeLog(e.__str__()+'2')
-                        
-                        #print '短信成功发送,流水号:'+str(seq)
-                        
                         writeLog('message send success,running num:'+str(seq))
                     else:
                         #频率过快
@@ -845,22 +821,6 @@ class processMessages(Thread):
                     db = dp.getLink()
                     db.query(sql)
                     dp.pushBack(db)
-                    
-                    #回写获取pid
-                    
-                    sql = "select pid from send_history where msgid=%s order by pid desc"%(repr(MsgID),)
-                        
-                    
-                    db = dp.getLink()
-                    hs = db.GetAll(sql)
-                    dp.pushBack(db)
-                    
-                    for h in hs:
-                        if h is not False:
-                            server_api(baseUrl="http://192.168.1.236:85/ISVService/SMSService.aspx",\
-                                       params={'type':'2','id':str(h[0]),'status':'1','time':time.strftime('%Y%m%d-%H:%M:%S')})
-                    #print '流水号为'+str(seqid)+'短消息已经成功发送到用户手机！'
-                    
                 else:
                     #print hex(MsgID)
                     try:
