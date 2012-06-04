@@ -197,7 +197,7 @@ def checkPhone(phone):
 def GetSequenceID():
     global SequenceID
     SequenceID = SequenceID+1
-    if SequenceID>0xFFFFFFFF:
+    if SequenceID>=0xFFFFFFFF:
         SequenceID=0x00000000
     return SequenceID
 class SMGP_head:
